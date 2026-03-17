@@ -1,337 +1,322 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pearls Rekenmachine</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pearls Rekenmachine</title>
 
-  <style>
-    *{
-      box-sizing:border-box;
-    }
+<style>
 
-    body{
-      margin:0;
-      font-family:Arial, sans-serif;
-      background:linear-gradient(135deg,#0f2a44,#1f4d7a);
-      padding:24px;
-    }
+*{
+box-sizing:border-box;
+}
 
-    .page{
-      max-width:900px;
-      margin:0 auto;
-    }
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(135deg,#0f2a44,#1f4d7a);
+padding:24px;
+}
 
-    .container{
-      background:white;
-      padding:28px;
-      border-radius:18px;
-      box-shadow:0 15px 40px rgba(0,0,0,0.25);
-    }
+.page{
+max-width:900px;
+margin:auto;
+}
 
-    .logo{
-      text-align:center;
-      margin-bottom:12px;
-    }
+.container{
+background:white;
+padding:28px;
+border-radius:18px;
+box-shadow:0 15px 40px rgba(0,0,0,0.25);
+}
 
-    .logo img{
-      width:220px;
-      max-width:100%;
-      height:auto;
-    }
+.logo{
+text-align:center;
+margin-bottom:10px;
+}
 
-    h1{
-      text-align:center;
-      color:#c9a33c;
-      margin:0 0 6px 0;
-      font-size:32px;
-    }
+.logo img{
+width:220px;
+}
 
-    .subtitle{
-      text-align:center;
-      color:#6b7280;
-      margin-bottom:24px;
-      font-size:16px;
-    }
+h1{
+text-align:center;
+color:#c9a33c;
+margin:0 0 6px 0;
+}
 
-    .table-wrap{
-      overflow-x:auto;
-      border:1px solid #e5e7eb;
-      border-radius:14px;
-      margin-bottom:20px;
-    }
+.subtitle{
+text-align:center;
+color:#6b7280;
+margin-bottom:20px;
+}
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width:520px;
-    }
+table{
+width:100%;
+border-collapse:collapse;
+}
 
-    th{
-      background:#0f2a44;
-      color:white;
-      padding:14px 16px;
-      text-align:left;
-      font-size:15px;
-    }
+th{
+background:#0f2a44;
+color:white;
+padding:12px;
+text-align:left;
+}
 
-    th:last-child{
-      text-align:center;
-      width:140px;
-    }
+td{
+padding:10px;
+border-bottom:1px solid #eee;
+}
 
-    td{
-      padding:12px 16px;
-      border-bottom:1px solid #edf2f7;
-      font-size:15px;
-    }
+.product-name{
+font-weight:600;
+color:#0f2a44;
+}
 
-    tr:last-child td{
-      border-bottom:none;
-    }
+input{
+width:90px;
+padding:8px;
+text-align:center;
+border-radius:8px;
+border:1px solid #ccc;
+}
 
-    tr:nth-child(even){
-      background:#fafcff;
-    }
+input:focus{
+border-color:#c9a33c;
+outline:none;
+}
 
-    .product-name{
-      font-weight:600;
-      color:#0f2a44;
-    }
+.results{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:20px;
+}
 
-    input[type="number"]{
-      width:100px;
-      padding:10px 12px;
-      text-align:center;
-      border-radius:10px;
-      border:1px solid #d1d5db;
-      font-size:15px;
-      transition:0.2s ease;
-    }
+.card{
+background:#f8fafc;
+border-left:5px solid #c9a33c;
+padding:16px;
+border-radius:10px;
+}
 
-    input[type="number"]:focus{
-      outline:none;
-      border-color:#c9a33c;
-      box-shadow:0 0 0 3px rgba(201,163,60,0.18);
-    }
+.card-label{
+font-size:14px;
+color:#666;
+}
 
-    .results{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0,1fr));
-      gap:14px;
-      margin-top:10px;
-    }
+.card-value{
+font-size:24px;
+font-weight:700;
+color:#0f2a44;
+}
 
-    .card{
-      background:#f8fafc;
-      border-left:5px solid #c9a33c;
-      border-radius:12px;
-      padding:16px;
-    }
+.actions{
+text-align:center;
+margin-top:20px;
+}
 
-    .card-label{
-      color:#6b7280;
-      font-size:14px;
-      margin-bottom:8px;
-    }
+button{
+padding:12px 24px;
+border:none;
+background:#c9a33c;
+color:white;
+border-radius:10px;
+font-weight:700;
+cursor:pointer;
+}
 
-    .card-value{
-      color:#0f2a44;
-      font-size:24px;
-      font-weight:700;
-    }
+button:hover{
+background:#b68f2b;
+}
 
-    .actions{
-      margin-top:20px;
-      display:flex;
-      justify-content:center;
-    }
-
-    button{
-      padding:12px 22px;
-      border:none;
-      background:#c9a33c;
-      color:white;
-      border-radius:10px;
-      font-size:16px;
-      font-weight:700;
-      cursor:pointer;
-      transition:0.2s ease;
-    }
-
-    button:hover{
-      background:#b68f2b;
-    }
-
-    @media (max-width:700px){
-      body{
-        padding:14px;
-      }
-
-      .container{
-        padding:18px;
-      }
-
-      h1{
-        font-size:26px;
-      }
-
-      .results{
-        grid-template-columns:1fr;
-      }
-
-      input[type="number"]{
-        width:84px;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="page">
-    <div class="container">
-      <div class="logo">
-        <img src="pearls_logo.png" alt="Pearls Logo">
-      </div>
 
-      <h1>Pearls Rekenmachine</h1>
-      <div class="subtitle">Productprijs per item: €450</div>
+<div class="page">
+<div class="container">
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Product</th>
-              <th>Aantal</th>
-            </tr>
-          </thead>
-          <tbody id="tableRows"></tbody>
-        </table>
-      </div>
+<div class="logo">
+<img src="pearls_logo.png">
+</div>
 
-      <div class="results">
-        <div class="card">
-          <div class="card-label">Totaal producten</div>
-          <div class="card-value" id="totalProducts">0</div>
-        </div>
+<h1>Pearls Rekenmachine</h1>
+<div class="subtitle">Kassa prijzen + Bezorgingen €450 per product</div>
 
-        <div class="card">
-          <div class="card-label">Totale omzet</div>
-          <div class="card-value" id="revenue">€0,00</div>
-        </div>
+<table>
 
-        <div class="card">
-          <div class="card-label">30% commissie</div>
-          <div class="card-value" id="commission30">€0,00</div>
-        </div>
+<tr>
+<th>Product</th>
+<th>Aantal</th>
+</tr>
 
-        <div class="card">
-          <div class="card-label">40% commissie</div>
-          <div class="card-value" id="commission40">€0,00</div>
-        </div>
-      </div>
+<tbody id="tableRows"></tbody>
 
-      <div class="actions">
-        <button onclick="resetValues()">Reset</button>
-      </div>
-    </div>
-  </div>
+</table>
 
-  <script>
-    const price = 450;
+<div class="results">
 
-    const products = [
-      "Haring",
-      "Kibbeling",
-      "Lekkerbek",
-      "Oesters",
-      "Visfrietjes",
-      "Patat",
-      "Fish Taco",
-      "Fish Burger",
-      "Sushi Nigiri",
-      "Sushi Kappa Maki",
-      "Sushi Ura Maki",
-      "Milkshake Aardbei",
-      "Milkshake Banaan",
-      "Milkshake Chocolade",
-      "Lime Splash",
-      "Scarlet Devil",
-      "The Shirley Spark",
-      "Bananasplit",
-      "Pearls Breeze"
-    ];
+<div class="card">
+<div class="card-label">Totaal producten</div>
+<div class="card-value" id="totalProducts">0</div>
+</div>
 
-    function euro(value){
-      return new Intl.NumberFormat('nl-NL', {
-        style: 'currency',
-        currency: 'EUR'
-      }).format(value);
-    }
+<div class="card">
+<div class="card-label">Kassa</div>
+<div class="card-value" id="kassaTotal">€0</div>
+</div>
 
-    function calculate(){
-      let total = 0;
+<div class="card">
+<div class="card-label">Bezorgingen</div>
+<div class="card-value" id="deliveryTotal">€0</div>
+</div>
 
-      products.forEach((_, index) => {
-        const input = document.getElementById(`p${index}`);
-        const value = Number(input.value) || 0;
-        localStorage.setItem(`pearls_product_${index}`, value);
-        total += value;
-      });
+<div class="card">
+<div class="card-label">Totale omzet</div>
+<div class="card-value" id="revenue">€0</div>
+</div>
 
-      const revenue = total * price;
-      const c30 = revenue * 0.30;
-      const c40 = revenue * 0.40;
+</div>
 
-      document.getElementById("totalProducts").textContent = total;
-      document.getElementById("revenue").textContent = euro(revenue);
-      document.getElementById("commission30").textContent = euro(c30);
-      document.getElementById("commission40").textContent = euro(c40);
-    }
+<div class="actions">
+<button onclick="resetValues()">Reset</button>
+</div>
 
-    function resetValues(){
-      products.forEach((_, index) => {
-        document.getElementById(`p${index}`).value = "";
-        localStorage.removeItem(`pearls_product_${index}`);
-      });
+</div>
+</div>
 
-      calculate();
-    }
+<script>
 
-    function buildTable(){
-      const table = document.getElementById("tableRows");
+const deliveryPrice = 450;
 
-      products.forEach((productName, index) => {
-        const tr = document.createElement("tr");
+const products = [
+"Haring",
+"Kibbeling",
+"Lekkerbek",
+"Oesters",
+"Visfrietjes",
+"Patat",
+"Fish Taco",
+"Fish Burger",
+"Sushi Nigiri",
+"Sushi Kappa Maki",
+"Sushi Ura Maki",
+"Milkshake Aardbei",
+"Milkshake Banaan",
+"Milkshake Chocolade",
+"Lime Splash",
+"Scarlet Devil",
+"The Shirley Spark",
+"Bananasplit",
+"Pearls Breeze"
+];
 
-        const tdName = document.createElement("td");
-        tdName.className = "product-name";
-        tdName.textContent = productName;
+const kassaPrices = [
+35,
+95,
+35,
+180,
+45,
+45,
+110,
+95,
+50,
+50,
+50,
+140,
+140,
+140,
+95,
+120,
+150,
+175,
+135
+];
 
-        const tdInput = document.createElement("td");
-        tdInput.style.textAlign = "center";
+function euro(x){
+return "€" + x.toLocaleString('nl-NL',{minimumFractionDigits:2})
+}
 
-        const input = document.createElement("input");
-        input.type = "number";
-        input.min = "0";
-        input.step = "1";
-        input.id = `p${index}`;
-        input.placeholder = "0";
-        input.oninput = calculate;
+function calculate(){
 
-        const saved = localStorage.getItem(`pearls_product_${index}`);
-        if(saved !== null && saved !== "0"){
-          input.value = saved;
-        }
+let totalProducts = 0
+let totalKassa = 0
 
-        tdInput.appendChild(input);
-        tr.appendChild(tdName);
-        tr.appendChild(tdInput);
-        table.appendChild(tr);
-      });
-    }
+products.forEach((_,i)=>{
 
-    buildTable();
-    calculate();
-  </script>
+let input = document.getElementById("p"+i)
+let value = Number(input.value) || 0
+
+localStorage.setItem("pearls_product_"+i,value)
+
+totalProducts += value
+totalKassa += value * kassaPrices[i]
+
+})
+
+let totalBezorgingen = totalProducts * deliveryPrice
+let totalRevenue = totalBezorgingen + totalKassa
+
+document.getElementById("totalProducts").innerText = totalProducts
+document.getElementById("kassaTotal").innerText = euro(totalKassa)
+document.getElementById("deliveryTotal").innerText = euro(totalBezorgingen)
+document.getElementById("revenue").innerText = euro(totalRevenue)
+
+}
+
+function resetValues(){
+
+products.forEach((_,i)=>{
+document.getElementById("p"+i).value=""
+localStorage.removeItem("pearls_product_"+i)
+})
+
+calculate()
+
+}
+
+function buildTable(){
+
+let table = document.getElementById("tableRows")
+
+products.forEach((name,i)=>{
+
+let tr = document.createElement("tr")
+
+let tdName = document.createElement("td")
+tdName.className = "product-name"
+tdName.innerText = name
+
+let tdInput = document.createElement("td")
+
+let input = document.createElement("input")
+input.type="number"
+input.min="0"
+input.id="p"+i
+input.oninput=calculate
+
+let saved = localStorage.getItem("pearls_product_"+i)
+if(saved){
+input.value = saved
+}
+
+tdInput.appendChild(input)
+
+tr.appendChild(tdName)
+tr.appendChild(tdInput)
+
+table.appendChild(tr)
+
+})
+
+}
+
+buildTable()
+calculate()
+
+</script>
+
 </body>
 </html>
