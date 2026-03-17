@@ -7,9 +7,7 @@
 
 <style>
 
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box;}
 
 body{
 margin:0;
@@ -30,26 +28,11 @@ border-radius:18px;
 box-shadow:0 15px 40px rgba(0,0,0,0.25);
 }
 
-.logo{
-text-align:center;
-margin-bottom:10px;
-}
+.logo{text-align:center;margin-bottom:10px;}
+.logo img{width:220px;}
 
-.logo img{
-width:220px;
-}
-
-h1{
-text-align:center;
-color:#c9a33c;
-margin:0 0 6px 0;
-}
-
-.subtitle{
-text-align:center;
-color:#6b7280;
-margin-bottom:20px;
-}
+h1{text-align:center;color:#c9a33c;margin:0 0 6px 0;}
+.subtitle{text-align:center;color:#6b7280;margin-bottom:20px;}
 
 table{
 width:100%;
@@ -60,30 +43,27 @@ th{
 background:#0f2a44;
 color:white;
 padding:12px;
-text-align:left;
+text-align:center;
 }
 
 td{
 padding:10px;
 border-bottom:1px solid #eee;
+text-align:center;
 }
 
 .product-name{
+text-align:left;
 font-weight:600;
 color:#0f2a44;
 }
 
 input{
-width:90px;
-padding:8px;
+width:70px;
+padding:6px;
 text-align:center;
 border-radius:8px;
 border:1px solid #ccc;
-}
-
-input:focus{
-border-color:#c9a33c;
-outline:none;
 }
 
 .results{
@@ -100,21 +80,10 @@ padding:16px;
 border-radius:10px;
 }
 
-.card-label{
-font-size:14px;
-color:#666;
-}
+.card-label{font-size:14px;color:#666;}
+.card-value{font-size:24px;font-weight:700;color:#0f2a44;}
 
-.card-value{
-font-size:24px;
-font-weight:700;
-color:#0f2a44;
-}
-
-.actions{
-text-align:center;
-margin-top:20px;
-}
+.actions{text-align:center;margin-top:20px;}
 
 button{
 padding:12px 24px;
@@ -126,10 +95,6 @@ font-weight:700;
 cursor:pointer;
 }
 
-button:hover{
-background:#b68f2b;
-}
-
 </style>
 </head>
 
@@ -139,17 +104,18 @@ background:#b68f2b;
 <div class="container">
 
 <div class="logo">
-<img src="pearls_logo.png" alt="Pearls logo">
+<img src="pearls_logo.png">
 </div>
 
 <h1>Pearls Rekenmachine</h1>
-<div class="subtitle">Uitbetaling berekenen voor Kassa en NPC bezorgingen</div>
+<div class="subtitle">Kassa vs NPC Bezorgingen</div>
 
 <table>
 
 <tr>
 <th>Product</th>
-<th>Aantal</th>
+<th>Kassa</th>
+<th>Bezorgingen</th>
 </tr>
 
 <tbody id="tableRows"></tbody>
@@ -189,83 +155,50 @@ background:#b68f2b;
 
 <script>
 
-const deliveryBase = 450;
-const deliveryCommission = 0.40;
-const deliveryPrice = deliveryBase * deliveryCommission;
-
+const deliveryPrice = 450 * 0.40;
 const kassaCommission = 0.10;
 
 const products = [
-"Haring",
-"Kibbeling",
-"Lekkerbek",
-"Oesters",
-"Visfrietjes",
-"Patat",
-"Fish Taco",
-"Fish Burger",
-"Sushi Nigiri",
-"Sushi Kappa Maki",
-"Sushi Ura Maki",
-"Milkshake Aardbei",
-"Milkshake Banaan",
-"Milkshake Chocolade",
-"Lime Splash",
-"Scarlet Devil",
-"The Shirley Spark",
-"Bananasplit",
-"Pearls Breeze"
+"Haring","Kibbeling","Lekkerbek","Oesters","Visfrietjes","Patat",
+"Fish Taco","Fish Burger","Sushi Nigiri","Sushi Kappa Maki","Sushi Ura Maki",
+"Milkshake Aardbei","Milkshake Banaan","Milkshake Chocolade",
+"Lime Splash","Scarlet Devil","The Shirley Spark","Bananasplit","Pearls Breeze"
 ];
 
 const kassaPrices = [
-35,
-95,
-35,
-180,
-45,
-45,
-110,
-95,
-50,
-50,
-50,
-140,
-140,
-140,
-95,
-120,
-150,
-175,
-135
+35,95,35,180,45,45,110,95,50,50,50,140,140,140,95,120,150,175,135
 ];
 
 function euro(x){
-return "€" + x.toLocaleString('nl-NL',{minimumFractionDigits:2, maximumFractionDigits:2})
+return "€" + x.toLocaleString('nl-NL',{minimumFractionDigits:2});
 }
 
 function calculate(){
 
 let totalProducts = 0
 let totalKassa = 0
+let totalDelivery = 0
 
 products.forEach((_,i)=>{
 
-let input = document.getElementById("p"+i)
-let value = Number(input.value) || 0
+let kassaVal = Number(document.getElementById("k"+i).value) || 0
+let deliveryVal = Number(document.getElementById("d"+i).value) || 0
 
-localStorage.setItem("pearls_product_"+i,value)
+localStorage.setItem("k"+i,kassaVal)
+localStorage.setItem("d"+i,deliveryVal)
 
-totalProducts += value
-totalKassa += value * (kassaPrices[i] * kassaCommission)
+totalProducts += kassaVal + deliveryVal
+
+totalKassa += kassaVal * (kassaPrices[i] * kassaCommission)
+totalDelivery += deliveryVal * deliveryPrice
 
 })
 
-let totalBezorgingen = totalProducts * deliveryPrice
-let totalRevenue = totalBezorgingen + totalKassa
+let totalRevenue = totalKassa + totalDelivery
 
 document.getElementById("totalProducts").innerText = totalProducts
 document.getElementById("kassaTotal").innerText = euro(totalKassa)
-document.getElementById("deliveryTotal").innerText = euro(totalBezorgingen)
+document.getElementById("deliveryTotal").innerText = euro(totalDelivery)
 document.getElementById("revenue").innerText = euro(totalRevenue)
 
 }
@@ -273,8 +206,10 @@ document.getElementById("revenue").innerText = euro(totalRevenue)
 function resetValues(){
 
 products.forEach((_,i)=>{
-document.getElementById("p"+i).value=""
-localStorage.removeItem("pearls_product_"+i)
+document.getElementById("k"+i).value=""
+document.getElementById("d"+i).value=""
+localStorage.removeItem("k"+i)
+localStorage.removeItem("d"+i)
 })
 
 calculate()
@@ -293,23 +228,31 @@ let tdName = document.createElement("td")
 tdName.className = "product-name"
 tdName.innerText = name
 
-let tdInput = document.createElement("td")
+let tdKassa = document.createElement("td")
+let inputK = document.createElement("input")
+inputK.id="k"+i
+inputK.type="number"
+inputK.oninput=calculate
 
-let input = document.createElement("input")
-input.type="number"
-input.min="0"
-input.id="p"+i
-input.oninput=calculate
+let savedK = localStorage.getItem("k"+i)
+if(savedK){ inputK.value = savedK }
 
-let saved = localStorage.getItem("pearls_product_"+i)
-if(saved){
-input.value = saved
-}
+tdKassa.appendChild(inputK)
 
-tdInput.appendChild(input)
+let tdDel = document.createElement("td")
+let inputD = document.createElement("input")
+inputD.id="d"+i
+inputD.type="number"
+inputD.oninput=calculate
+
+let savedD = localStorage.getItem("d"+i)
+if(savedD){ inputD.value = savedD }
+
+tdDel.appendChild(inputD)
 
 tr.appendChild(tdName)
-tr.appendChild(tdInput)
+tr.appendChild(tdKassa)
+tr.appendChild(tdDel)
 
 table.appendChild(tr)
 
