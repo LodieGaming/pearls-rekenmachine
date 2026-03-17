@@ -139,11 +139,11 @@ background:#b68f2b;
 <div class="container">
 
 <div class="logo">
-<img src="pearls_logo.png">
+<img src="pearls_logo.png" alt="Pearls logo">
 </div>
 
 <h1>Pearls Rekenmachine</h1>
-<div class="subtitle">Kassa prijzen + Bezorgingen €450 per product</div>
+<div class="subtitle">Uitbetaling berekenen voor Kassa en NPC bezorgingen</div>
 
 <table>
 
@@ -190,6 +190,7 @@ background:#b68f2b;
 <script>
 
 const deliveryPrice = 450;
+const kassaCommission = 0.10;
 
 const products = [
 "Haring",
@@ -236,7 +237,7 @@ const kassaPrices = [
 ];
 
 function euro(x){
-return "€" + x.toLocaleString('nl-NL',{minimumFractionDigits:2})
+return "€" + x.toLocaleString('nl-NL',{minimumFractionDigits:2, maximumFractionDigits:2})
 }
 
 function calculate(){
@@ -252,7 +253,7 @@ let value = Number(input.value) || 0
 localStorage.setItem("pearls_product_"+i,value)
 
 totalProducts += value
-totalKassa += value * kassaPrices[i]
+totalKassa += value * (kassaPrices[i] * kassaCommission)
 
 })
 
