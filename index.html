@@ -189,7 +189,10 @@ background:#b68f2b;
 
 <script>
 
-const deliveryPrice = 450;
+const deliveryBase = 450;
+const deliveryCommission = 0.40;
+const deliveryPrice = deliveryBase * deliveryCommission;
+
 const kassaCommission = 0.10;
 
 const products = [
