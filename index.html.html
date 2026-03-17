@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<title>Sales Dashboard</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#e9f6ff;
+margin:0;
+padding:40px;
+display:flex;
+justify-content:center;
+}
+
+.container{
+background:white;
+padding:30px;
+border-radius:12px;
+width:700px;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+h1{
+text-align:center;
+color:#2b8ed6;
+margin-bottom:5px;
+}
+
+.subtitle{
+text-align:center;
+color:#777;
+margin-bottom:25px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-bottom:20px;
+}
+
+th{
+background:#d8efff;
+padding:10px;
+}
+
+td{
+padding:8px;
+border-bottom:1px solid #eee;
+}
+
+input{
+width:80px;
+padding:6px;
+text-align:center;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+input:focus{
+border-color:#2b8ed6;
+outline:none;
+}
+
+.results{
+background:#f1f9ff;
+padding:15px;
+border-radius:8px;
+font-size:18px;
+margin-top:10px;
+}
+
+.result-row{
+display:flex;
+justify-content:space-between;
+margin:5px 0;
+}
+
+button{
+margin-top:15px;
+padding:10px 18px;
+border:none;
+background:#2b8ed6;
+color:white;
+border-radius:6px;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#1f74b2;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Sales Calculator</h1>
+<div class="subtitle">Productprijs €450</div>
+
+<table>
+
+<tr>
+<th>Product</th>
+<th>Aantal</th>
+</tr>
+
+<tbody id="tableRows"></tbody>
+
+</table>
+
+<div class="results">
+
+<div class="result-row">
+<span>Totaal producten</span>
+<span id="totalProducts">0</span>
+</div>
+
+<div class="result-row">
+<span>Totale omzet</span>
+<span id="revenue">€0</span>
+</div>
+
+<div class="result-row">
+<span>30% commissie</span>
+<span id="commission30">€0</span>
+</div>
+
+<div class="result-row">
+<span>40% commissie</span>
+<span id="commission40">€0</span>
+</div>
+
+</div>
+
+<button onclick="resetValues()">Reset</button>
+
+</div>
+
+<script>
+
+const price = 450
+const maxProducts = 19
+
+function euro(x){
+return "€" + x.toLocaleString('nl-NL',{minimumFractionDigits:2})
+}
+
+function calculate(){
+
+let total = 0
+
+for(let i=1;i<=maxProducts;i++){
+
+let val = Number(document.getElementById("p"+i).value) || 0
+
+localStorage.setItem("p"+i,val)
+
+total += val
+}
+
+let revenue = total * price
+let c30 = revenue * 0.30
+let c40 = revenue * 0.40
+
+document.getElementById("totalProducts").innerText = total
+document.getElementById("revenue").innerText = euro(revenue)
+document.getElementById("commission30").innerText = euro(c30)
+document.getElementById("commission40").innerText = euro(c40)
+
+}
+
+function resetValues(){
+
+for(let i=1;i<=maxProducts;i++){
+document.getElementById("p"+i).value=""
+localStorage.removeItem("p"+i)
+}
+
+calculate()
+
+}
+
+const table = document.getElementById("tableRows")
+
+for(let i=1;i<=maxProducts;i++){
+
+let tr = document.createElement("tr")
+
+let td1 = document.createElement("td")
+td1.innerText = "Product " + i
+
+let td2 = document.createElement("td")
+
+let input = document.createElement("input")
+input.type="number"
+input.id="p"+i
+input.oninput=calculate
+
+let saved = localStorage.getItem("p"+i)
+
+if(saved){
+input.value = saved
+}
+
+td2.appendChild(input)
+
+tr.appendChild(td1)
+tr.appendChild(td2)
+
+table.appendChild(tr)
+
+}
+
+calculate()
+
+</script>
+
+</body>
+</html>
